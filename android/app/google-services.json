@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "904993358257",
+    "project_id": "flutter-ayt",
+    "storage_bucket": "flutter-ayt.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:904993358257:android:9e1ce2cee0e9b9f6e83d90",
+        "android_client_info": {
+          "package_name": "br.com.ribeiro.flare_tutorial"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "904993358257-digh5uef7usr40c05vg69ed9n01t4eb1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "br.com.ribeiro.flare_tutorial",
+            "certificate_hash": "f4eccecb8bf69f7bad322fae0082b03e9db23bd6"
+          }
+        },
+        {
+          "client_id": "904993358257-9sj5napchfq4ngmal0d10j7i27bo3du1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAIoti9d_fbUzMqWTh52Ufxdp8s2qxcJUw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "904993358257-9sj5napchfq4ngmal0d10j7i27bo3du1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
