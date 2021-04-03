@@ -4,6 +4,8 @@ import 'dart:convert';
 import 'package:AYT_Attendence/API/api.dart';
 import 'package:AYT_Attendence/pages/EaelyCheck_IN_OUT.dart';
 import 'package:AYT_Attendence/sidebar/image_slider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -24,6 +26,8 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
+
+  String path=All_API().baseurl_img+All_API().profile_img_path;
   String name;
   String date;
   String uniqID;
@@ -42,13 +46,19 @@ class _DashboardState extends State<Dashboard> {
   String statuscode;
   String s1;
   String s2;
+
+  String email;
+  String password;
+  String uniqId;
+  String userphn;
+  String userimg;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     getData();
     showData();
-
   }
 
   getData()async{
@@ -62,9 +72,15 @@ class _DashboardState extends State<Dashboard> {
       address=sharedPreferences.getString("address");
       device=sharedPreferences.getString("device_id");
 
+      userphn = sharedPreferences.getString("phone");
+      userimg = sharedPreferences.getString("image");
+      email = sharedPreferences.getString("email");
+      password = sharedPreferences.getString("password");
+      String image=path+userimg;
 
     });
   }
+
   showData(){
     trackdashStudent(uniqID,device);
   }

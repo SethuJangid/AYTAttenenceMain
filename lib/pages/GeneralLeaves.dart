@@ -76,135 +76,92 @@ class _GeneralLeaveState extends State<GeneralLeave> {
           onPressed: () => Navigator.of(context).pop(),
         ),
       ),
-      body: Container(
-        child: Row(
+      body: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        physics: AlwaysScrollableScrollPhysics(),
+        child: Column(
           children: [
-            Container(
-              width: mediaQuery.size.width * 0.50,
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text("Date",style: TextStyle(fontSize: 20,color: Colors.black),textAlign: TextAlign.center,),
-                  ),
-                  Divider(
-                    height: 1,
-                    color: Colors.deepOrange,
-                  ),
-                  FutureBuilder<GeneralLeaveModel>(
-                      future: loadStudent(),
-                      builder: (context,snapshot){
-                        if(snapshot.hasData){
-                          return ListView.builder(
-                              itemCount: snapshot.data.data.length,
-                              scrollDirection: Axis.vertical,
-                              shrinkWrap: true,
-                              itemBuilder: (context, index){
-                                var article = snapshot.data.data[index];
-                                print("check--> "+article.name);
-                                var date = DateTime.parse(article.date);
-                                var formattedDate = "${date.day}-${date.month}-${date.year}";
-                                print (formattedDate);
-                                return Card(
-                                  color: Colors.blue[1000],
-                                  elevation: 10,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Text(formattedDate,style: TextStyle(fontSize: 20,color: Colors.orange,),textAlign: TextAlign.center,),
-                                  ),
-                                );
-                              }
-                          );
-                        }else if(snapshot.hasData == false){
-
-                          return Center(
-                            child: Card(
-                              color: Colors.blue[1000],
-                              elevation: 10,
-                              child: Padding(
-                                padding: const EdgeInsets.all(5.0),
-                                child: Text(All_API().two_error_occurred,style: TextStyle(fontSize: 15,color: Colors.orange,),textAlign: TextAlign.center,),
-                              ),
-                            ),
-                          );
-
-                        }
-                        else{
-                          return StatusCode==400?Card(
-                            color: Colors.blue[1000],
-                            elevation: 10,
-                            child: Padding(
-                              padding: const EdgeInsets.all(5.0),
-                              child: Text("No Record Found!!",style: TextStyle(fontSize: 15,color: Colors.orange,),textAlign: TextAlign.center,),
-                            ),
-                          ):
-                          CircularProgressIndicator();
-                        }
-                      }
-                  ),
-                ],
-              ),
+            Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text("Date",style: TextStyle(fontSize: 20,color: Colors.black),textAlign: TextAlign.center,),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text("Date",style: TextStyle(fontSize: 20,color: Colors.black),textAlign: TextAlign.center,),
+                ),
+              ],
             ),
             Divider(
               height: 1,
               color: Colors.deepOrange,
             ),
-            Container(
-              width: mediaQuery.size.width * 0.50,
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text("Name",style: TextStyle(fontSize: 20,color: Colors.black),),
-                  ),
-                  Divider(
-                    height: 1,
-                    color: Colors.deepOrange,
-                  ),
-                  FutureBuilder<GeneralLeaveModel>(
-                    future: loadStudent(),
-                    builder: (context,snapshot){
-                      if(snapshot.hasData){
-                        return ListView.builder(
-                            itemCount: snapshot.data.data.length,
-                            scrollDirection: Axis.vertical,
-                            shrinkWrap: true,
-                            itemBuilder: (context, index){
-                              var article = snapshot.data.data[index];
-                              return Card(
+            FutureBuilder<GeneralLeaveModel>(
+                future: loadStudent(),
+                builder: (context,snapshot){
+                  if(snapshot.hasData){
+                    return ListView.builder(
+                        itemCount: snapshot.data.data.length,
+                        scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
+                        itemBuilder: (context, index){
+                          var article = snapshot.data.data[index];
+                          print("check--> "+article.name);
+                          var date = DateTime.parse(article.date);
+                          var formattedDate = "${date.day}-${date.month}-${date.year}";
+                          print (formattedDate);
+                          return Row(
+                            children: [
+                              Card(
                                 color: Colors.blue[1000],
                                 elevation: 10,
-                                child: Column(
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Text(article.name,style: TextStyle(fontSize: 20,color: Colors.orange,),textAlign: TextAlign.center,),
-                                      ),
-                                    ]),
-                              );
-                            }
-                        );
-                      }
-                      else{
-                        return Center(
-                            child: StatusCode==400?Card(
-                              color: Colors.blue[1000],
-                              elevation: 10,
-                              child: Padding(
-                                padding: const EdgeInsets.all(5.0),
-                                child: Text("No Record Found!!",style: TextStyle(fontSize: 15,color: Colors.orange,),textAlign: TextAlign.center,),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(formattedDate,style: TextStyle(fontSize: 20,color: Colors.orange,),textAlign: TextAlign.center,),
+                                ),
                               ),
-                            ):
-                            CircularProgressIndicator());
-                      }
-                    }
-                  ),
-                ],
-              ),
+                              Card(
+                                color: Colors.blue[1000],
+                                elevation: 10,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(article.name,style: TextStyle(fontSize: 20,color: Colors.orange,),textAlign: TextAlign.center,),
+                                ),
+                              ),
+                            ],
+                          );
+                        }
+                    );
+                  }else if(snapshot.hasData == false){
+                    return Center(
+                      child: Card(
+                        color: Colors.blue[1000],
+                        elevation: 10,
+                        child: Padding(
+                          padding: const EdgeInsets.all(5.0),
+                          child: Text(All_API().two_error_occurred,style: TextStyle(fontSize: 15,color: Colors.orange,),textAlign: TextAlign.center,),
+                        ),
+                      ),
+                    );
+                  }
+                  else{
+                    return StatusCode==400?Card(
+                      color: Colors.blue[1000],
+                      elevation: 10,
+                      child: Padding(
+                        padding: const EdgeInsets.all(5.0),
+                        child: Text("No Record Found!!",style: TextStyle(fontSize: 15,color: Colors.orange,),textAlign: TextAlign.center,),
+                      ),
+                    ):
+                    CircularProgressIndicator();
+                  }
+                }
             ),
           ],
         ),
-      ),
+      )
+
     );
   }
 }

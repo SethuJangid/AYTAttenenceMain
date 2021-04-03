@@ -11,7 +11,9 @@ import 'package:AYT_Attendence/pages/GeneralLeaves.dart';
 import 'package:AYT_Attendence/pages/SalaryList.dart';
 import 'package:AYT_Attendence/pages/dashboard.dart';
 import 'package:AYT_Attendence/pages/trackattendance.dart';
+import 'package:AYT_Attendence/sidebar/bottom.dart';
 import 'package:AYT_Attendence/sidebar/foldable_sidebar.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -79,6 +81,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
   String uniqId;
   String userphn;
   String userimg;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -169,7 +172,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
             ListTile(
               onTap: (){
                 print("Tapped Chat");
-                //Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreenChat(title: 'CHAT DEMO'),),);
+                //Navigator.push(context, MaterialPageRoute(builder: (context) => uID==null?BottomNavBar():ChatAllUser(),),);
               },
               leading: Icon(Icons.chat,color: Colors.orange,),
               title: Text("Chat",style: TextStyle(color: Colors.orange),),

@@ -24,8 +24,7 @@ dependencies:
   google_sign_in: ^4.5.3
   cloud_firestore:  ^0.14.0+2
   firebase_storage: ^4.0.0
-  cached_network_image: ^2.3.1
-  photo_view: ^0.10.2
+  random_string: ^2.0.1
 
   pull_to_refresh: ^1.6.3
 

@@ -1,4 +1,6 @@
-import 'package:AYT_Attendence/Screens/ChatingPage/chat.dart';
+
+import 'package:AYT_Attendence/Screens/ChatingPage/ChatMain.dart';
+import 'package:AYT_Attendence/Screens/Splash/splashscreen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -31,6 +33,7 @@ class MyHomePage extends StatefulWidget {
 class MyHomePageState extends State<MyHomePage> {
   String _message = '';
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+
 
   void getMessage(){
     _firebaseMessaging.getToken().then((token) => print(token));
@@ -131,6 +134,7 @@ class MyHomePageState extends State<MyHomePage> {
                     title: Text('Raindrop App'),
                   ),*/
                   body: ChatScreen()
+                //body: GeneralLeave(),
               ),
               /*IgnorePointer(
                   child: AnimationScreen(
