@@ -1,28 +1,29 @@
-
-import 'package:AYT_Attendence/Screens/ChatingPage/helper/helperfunctions.dart';
-import 'package:AYT_Attendence/Screens/ChatingPage/helper/theme.dart';
-import 'package:AYT_Attendence/Screens/ChatingPage/services/auth.dart';
-import 'package:AYT_Attendence/Screens/ChatingPage/services/database.dart';
-import 'package:AYT_Attendence/Screens/ChatingPage/views/chatrooms.dart';
-import 'package:AYT_Attendence/Screens/ChatingPage/widget/widget.dart';
+import 'package:AYT_Attendence/Screens/chat2/widget.dart';
+import 'package:AYT_Attendence/Screens/chat2/UserChatList.dart';
+import 'package:AYT_Attendence/Screens/chat2/database.dart';
 import 'package:flutter/material.dart';
 
-class SignUp extends StatefulWidget {
+import 'auth2.dart';
+import 'helperfunctions2.dart';
+
+class Registration extends StatefulWidget {
   final Function toggleView;
-  SignUp(this.toggleView);
+
+  Registration(this.toggleView);
+
 
   @override
   _SignUpState createState() => _SignUpState();
 }
 
-class _SignUpState extends State<SignUp> {
+class _SignUpState extends State<Registration> {
   TextEditingController emailEditingController = new TextEditingController();
   TextEditingController passwordEditingController = new TextEditingController();
   TextEditingController usernameEditingController =
-      new TextEditingController();
+  new TextEditingController();
 
-  AuthService authService = new AuthService();
-  DatabaseMethods databaseMethods = new DatabaseMethods();
+  AuthService2 authService = new AuthService2();
+  DatabaseMethods2 databaseMethods = new DatabaseMethods2();
 
   final formKey = GlobalKey<FormState>();
   bool isLoading = false;
@@ -37,23 +38,23 @@ class _SignUpState extends State<SignUp> {
 
       await authService.signUpWithEmailAndPassword(emailEditingController.text,
           passwordEditingController.text).then((result){
-            if(result != null){
+        if(result != null){
 
-              Map<String,String> userDataMap = {
-                "userName" : usernameEditingController.text,
-                "userEmail" : emailEditingController.text
-              };
+          Map<String,String> userDataMap = {
+            "userName" : usernameEditingController.text,
+            "userEmail" : emailEditingController.text
+          };
 
-              databaseMethods.addUserInfo(userDataMap);
+          databaseMethods.addUserInfo(userDataMap);
 
-              HelperFunctions.saveUserLoggedInSharedPreference(true);
-              HelperFunctions.saveUserNameSharedPreference(usernameEditingController.text);
-              HelperFunctions.saveUserEmailSharedPreference(emailEditingController.text);
+          HelperFunctions2.saveUserLoggedInSharedPreference(true);
+          HelperFunctions2.saveUserNameSharedPreference(usernameEditingController.text);
+          HelperFunctions2.saveUserEmailSharedPreference(emailEditingController.text);
 
-              Navigator.pushReplacement(context, MaterialPageRoute(
-                  builder: (context) => ChatRoom()
-              ));
-            }
+          Navigator.pushReplacement(context, MaterialPageRoute(
+              builder: (context) => ChatRoom2()
+          ));
+        }
       });
     }
   }
@@ -61,8 +62,8 @@ class _SignUpState extends State<SignUp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
-      appBar: appBarMain(context),
+      resizeToAvoidBottomInset: true,
+      appBar: appBarMain2(context),
       body: isLoading ? Container(child: Center(child: CircularProgressIndicator(),),) :  Container(
         padding: EdgeInsets.symmetric(horizontal: 24),
         child: Column(
@@ -85,7 +86,7 @@ class _SignUpState extends State<SignUp> {
                     style: simpleTextStyle(),
                     validator: (val){
                       return RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(val) ?
-                          null : "Enter correct email";
+                      null : "Enter correct email";
                     },
                     decoration: textFieldInputDecoration("email"),
                   ),
@@ -127,20 +128,6 @@ class _SignUpState extends State<SignUp> {
             SizedBox(
               height: 16,
             ),
-            /*Container(
-              padding: EdgeInsets.symmetric(vertical: 16),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(30), color: Colors.white),
-              width: MediaQuery.of(context).size.width,
-              child: Text(
-                "Sign Up with Google",
-                style: TextStyle(fontSize: 17, color: CustomTheme.textColor),
-                textAlign: TextAlign.center,
-              ),
-            ),
-            SizedBox(
-              height: 16,
-            ),*/
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -150,7 +137,7 @@ class _SignUpState extends State<SignUp> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    widget.toggleView();
+                    //widget.toggleView();
                   },
                   child: Text(
                     "SignIn now",

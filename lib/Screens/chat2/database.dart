@@ -1,8 +1,8 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class DatabaseMethods {
-  Future<void> addUserInfo(userData) async {
+class DatabaseMethods2 {
+  Future addUserInfo(userData) async {
     Firestore.instance.collection("users").add(userData).catchError((e) {
       print(e.toString());
     });
@@ -25,7 +25,7 @@ class DatabaseMethods {
         .getDocuments();
   }
 
-  Future<bool> addChatRoom(chatRoom, chatRoomId) {
+  Future addChatRoom(chatRoom, chatRoomId) {
     Firestore.instance
         .collection("chatRoom")
         .document(chatRoomId)
@@ -45,7 +45,7 @@ class DatabaseMethods {
   }
 
 
-  Future<void> addMessage(String chatRoomId, chatMessageData){
+  Future addMessage(String chatRoomId, chatMessageData){
 
     Firestore.instance.collection("chatRoom")
         .document(chatRoomId)
@@ -59,7 +59,7 @@ class DatabaseMethods {
     return await Firestore.instance
         .collection("chatRoom")
         .where('users', isEqualTo: itIsMyName)
-        .snapshots;
+        .snapshots(includeMetadataChanges: true);
   }
 
 }

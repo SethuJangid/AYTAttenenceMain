@@ -1,14 +1,13 @@
-
-import 'package:AYT_Attendence/Screens/ChatingPage/views/signin.dart';
-import 'package:AYT_Attendence/Screens/ChatingPage/views/signup.dart';
+import 'package:AYT_Attendence/Screens/chat2/Login.dart';
+import 'package:AYT_Attendence/Screens/chat2/Registration.dart';
 import 'package:flutter/material.dart';
 
-class Authenticate extends StatefulWidget {
+class Authenticate2 extends StatefulWidget {
   @override
   _AuthenticateState createState() => _AuthenticateState();
 }
 
-class _AuthenticateState extends State<Authenticate> {
+class _AuthenticateState extends State<Authenticate2> {
   bool showSignIn = true;
 
   void toggleView() {
@@ -20,9 +19,9 @@ class _AuthenticateState extends State<Authenticate> {
   @override
   Widget build(BuildContext context) {
     if (showSignIn) {
-      return SignIn(toggleView);
+      return Login(toggleView);
     } else {
-      return SignUp(toggleView);
+      return Registration(toggleView);
     }
   }
 }

@@ -1,20 +1,19 @@
-
-import 'package:AYT_Attendence/Screens/ChatingPage/helper/constants.dart';
-import 'package:AYT_Attendence/Screens/ChatingPage/services/database.dart';
-import 'package:AYT_Attendence/Screens/ChatingPage/widget/widget.dart';
+import 'package:AYT_Attendence/Screens/chat2/widget.dart';
+import 'package:AYT_Attendence/Screens/chat2/constants.dart';
+import 'package:AYT_Attendence/Screens/chat2/database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-class Chat extends StatefulWidget {
+class Chat2 extends StatefulWidget {
   final String chatRoomId;
 
-  Chat({this.chatRoomId});
+  Chat2({this.chatRoomId});
 
   @override
   _ChatState createState() => _ChatState();
 }
 
-class _ChatState extends State<Chat> {
+class _ChatState extends State<Chat2> {
 
   Stream<QuerySnapshot> chats;
   TextEditingController messageEditingController = new TextEditingController();
@@ -24,11 +23,11 @@ class _ChatState extends State<Chat> {
       stream: chats,
       builder: (context, snapshot){
         return snapshot.hasData ?  ListView.builder(
-          itemCount: snapshot.data.documents.length,
+            itemCount: snapshot.data.documents.length,
             itemBuilder: (context, index){
               return MessageTile(
                 message: snapshot.data.documents[index].data["message"],
-                sendByMe: Constants.myName == snapshot.data.documents[index].data["sendBy"],
+                sendByMe: Constants2.myName == snapshot.data.documents[index].data["sendBy"],
               );
             }) : Container();
       },
@@ -38,14 +37,14 @@ class _ChatState extends State<Chat> {
   addMessage() {
     if (messageEditingController.text.isNotEmpty) {
       Map<String, dynamic> chatMessageMap = {
-        "sendBy": Constants.myName,
+        "sendBy": Constants2.myName,
         "message": messageEditingController.text,
         'time': DateTime
             .now()
             .millisecondsSinceEpoch,
       };
 
-      DatabaseMethods().addMessage(widget.chatRoomId, chatMessageMap);
+      DatabaseMethods2().addMessage(widget.chatRoomId, chatMessageMap);
 
       setState(() {
         messageEditingController.text = "";
@@ -55,7 +54,7 @@ class _ChatState extends State<Chat> {
 
   @override
   void initState() {
-    DatabaseMethods().getChats(widget.chatRoomId).then((val) {
+    DatabaseMethods2().getChats(widget.chatRoomId).then((val) {
       setState(() {
         chats = val;
       });
@@ -66,7 +65,7 @@ class _ChatState extends State<Chat> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBarMain(context),
+      appBar: appBarMain2(context),
       body: Container(
         child: Stack(
           children: [
@@ -158,9 +157,9 @@ class MessageTile extends StatelessWidget {
                 bottomLeft: Radius.circular(23)
             ) :
             BorderRadius.only(
-        topLeft: Radius.circular(23),
-          topRight: Radius.circular(23),
-          bottomRight: Radius.circular(23)),
+                topLeft: Radius.circular(23),
+                topRight: Radius.circular(23),
+                bottomRight: Radius.circular(23)),
             gradient: LinearGradient(
               colors: sendByMe ? [
                 const Color(0xff007EF4),
@@ -175,12 +174,11 @@ class MessageTile extends StatelessWidget {
         child: Text(message,
             textAlign: TextAlign.start,
             style: TextStyle(
-            color: Colors.white,
-            fontSize: 16,
-            fontFamily: 'OverpassRegular',
-            fontWeight: FontWeight.w300)),
+                color: Colors.white,
+                fontSize: 16,
+                fontFamily: 'OverpassRegular',
+                fontWeight: FontWeight.w300)),
       ),
     );
   }
 }
-

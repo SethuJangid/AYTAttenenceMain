@@ -1,10 +1,10 @@
-
-import 'package:AYT_Attendence/Screens/ChatingPage/helper/constants.dart';
-import 'package:AYT_Attendence/Screens/ChatingPage/services/database.dart';
-import 'package:AYT_Attendence/Screens/ChatingPage/views/chat.dart';
-import 'package:AYT_Attendence/Screens/ChatingPage/widget/widget.dart';
+import 'package:AYT_Attendence/Screens/chat2/constants.dart';
+import 'package:AYT_Attendence/Screens/chat2/widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+
+import 'Chat.dart';
+import 'database.dart';
 
 class Search extends StatefulWidget {
   @override
@@ -13,7 +13,7 @@ class Search extends StatefulWidget {
 
 class _SearchState extends State<Search> {
 
-  DatabaseMethods databaseMethods = new DatabaseMethods();
+  DatabaseMethods2 databaseMethods = new DatabaseMethods2();
   TextEditingController searchEditingController = new TextEditingController();
   QuerySnapshot searchResultSnapshot;
 
@@ -51,9 +51,9 @@ class _SearchState extends State<Search> {
 
   /// 1.create a chatroom, send user to the chatroom, other userdetails
   sendMessage(String userName){
-    List<String> users = [Constants.myName,userName];
+    List<String> users = [Constants2.myName,userName];
 
-    String chatRoomId = getChatRoomId(Constants.myName,userName);
+    String chatRoomId = getChatRoomId(Constants2.myName,userName);
 
     Map<String, dynamic> chatRoom = {
       "users": users,
@@ -63,7 +63,7 @@ class _SearchState extends State<Search> {
     databaseMethods.addChatRoom(chatRoom, chatRoomId);
 
     Navigator.push(context, MaterialPageRoute(
-      builder: (context) => Chat(
+      builder: (context) => Chat2(
         chatRoomId: chatRoomId,
       )
     ));
@@ -81,14 +81,14 @@ class _SearchState extends State<Search> {
               Text(
                 userName,
                 style: TextStyle(
-                    color: Colors.white,
+                    color: Colors.black,
                     fontSize: 16
                 ),
               ),
               Text(
                 userEmail,
                 style: TextStyle(
-                    color: Colors.white,
+                    color: Colors.black,
                     fontSize: 16
                 ),
               )
@@ -107,7 +107,7 @@ class _SearchState extends State<Search> {
               ),
               child: Text("Message",
                 style: TextStyle(
-                    color: Colors.white,
+                    color: Colors.black,
                     fontSize: 16
                 ),),
             ),
@@ -136,7 +136,7 @@ class _SearchState extends State<Search> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBarMain(context),
+      appBar: appBarMain2(context),
       body: isLoading ? Container(
         child: Center(
           child: CircularProgressIndicator(),
@@ -156,7 +156,7 @@ class _SearchState extends State<Search> {
                       decoration: InputDecoration(
                         hintText: "search username ...",
                         hintStyle: TextStyle(
-                          color: Colors.white,
+                          color: Colors.black,
                           fontSize: 16,
                         ),
                         border: InputBorder.none
@@ -182,8 +182,8 @@ class _SearchState extends State<Search> {
                           borderRadius: BorderRadius.circular(40)
                         ),
                         padding: EdgeInsets.all(12),
-                        child: Icon(Icons.search,
-                         size: 50,)),
+                        child: Image.asset("assets/images/search_black.png",
+                          height: 25, width: 25,)),
                   )
                 ],
               ),
