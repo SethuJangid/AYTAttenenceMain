@@ -1,8 +1,10 @@
+import 'package:AYT_Attendence/API/api.dart';
 import 'package:AYT_Attendence/Screens/chat2/widget.dart';
-import 'package:AYT_Attendence/Screens/chat2/UserChatList.dart';
 import 'package:AYT_Attendence/Screens/chat2/database.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import 'Chating2.dart';
 import 'auth2.dart';
 import 'helperfunctions2.dart';
 
@@ -17,10 +19,14 @@ class Registration extends StatefulWidget {
 }
 
 class _SignUpState extends State<Registration> {
-  TextEditingController emailEditingController = new TextEditingController();
-  TextEditingController passwordEditingController = new TextEditingController();
-  TextEditingController usernameEditingController =
-  new TextEditingController();
+  /*String path=All_API().baseurl_img+All_API().profile_img_path;
+  String name;
+  String uniqID;
+  String email;
+  String password;
+  String uniqId;
+  String userphn;
+  String userimg;
 
   AuthService2 authService = new AuthService2();
   DatabaseMethods2 databaseMethods = new DatabaseMethods2();
@@ -28,43 +34,54 @@ class _SignUpState extends State<Registration> {
   final formKey = GlobalKey<FormState>();
   bool isLoading = false;
 
-  singUp() async {
+  String image;
 
+  getData()async{
+    SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
+    setState(() {
+      name=sharedPreferences.getString("name");
+      uniqID=sharedPreferences.getString("unique_id");
+
+      userphn = sharedPreferences.getString("phone");
+      userimg = sharedPreferences.getString("image");
+      email = sharedPreferences.getString("email");
+      password = sharedPreferences.getString("password");
+      image = path+userimg;
+    });
+  }
+
+  singUp() async {
     if(formKey.currentState.validate()){
       setState(() {
-
         isLoading = true;
       });
-
-      await authService.signUpWithEmailAndPassword(emailEditingController.text,
-          passwordEditingController.text).then((result){
+      await authService.signUpWithEmailAndPassword(email,
+          password).then((result){
         if(result != null){
-
           Map<String,String> userDataMap = {
-            "userName" : usernameEditingController.text,
-            "userEmail" : emailEditingController.text
+            "userName" : name,
+            "userEmail" : email,
+            "userImage" : image,
           };
-
           databaseMethods.addUserInfo(userDataMap);
-
           HelperFunctions2.saveUserLoggedInSharedPreference(true);
-          HelperFunctions2.saveUserNameSharedPreference(usernameEditingController.text);
-          HelperFunctions2.saveUserEmailSharedPreference(emailEditingController.text);
-
+          HelperFunctions2.saveUserNameSharedPreference(name);
+          HelperFunctions2.saveUserEmailSharedPreference(email);
           Navigator.pushReplacement(context, MaterialPageRoute(
-              builder: (context) => ChatRoom2()
+              builder: (context) => ChatRoom()
           ));
         }
       });
     }
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: appBarMain2(context),
-      body: isLoading ? Container(child: Center(child: CircularProgressIndicator(),),) :  Container(
+      //body:
+      /*isLoading ? Container(child: Center(child: CircularProgressIndicator(),),) :  Container(
         padding: EdgeInsets.symmetric(horizontal: 24),
         child: Column(
           children: [
@@ -75,14 +92,14 @@ class _SignUpState extends State<Registration> {
                 children: [
                   TextFormField(
                     style: simpleTextStyle(),
-                    controller: usernameEditingController,
+                    //controller: usernameEditingController,
                     validator: (val){
                       return val.isEmpty || val.length < 3 ? "Enter Username 3+ characters" : null;
                     },
                     decoration: textFieldInputDecoration("username"),
                   ),
                   TextFormField(
-                    controller: emailEditingController,
+                    //controller: emailEditingController,
                     style: simpleTextStyle(),
                     validator: (val){
                       return RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(val) ?
@@ -94,7 +111,7 @@ class _SignUpState extends State<Registration> {
                     obscureText: true,
                     style: simpleTextStyle(),
                     decoration: textFieldInputDecoration("password"),
-                    controller: passwordEditingController,
+                    //controller: passwordEditingController,
                     validator:  (val){
                       return val.length < 6 ? "Enter Password 6+ characters" : null;
                     },
@@ -137,7 +154,7 @@ class _SignUpState extends State<Registration> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    //widget.toggleView();
+                    widget.toggleView();
                   },
                   child: Text(
                     "SignIn now",
@@ -154,7 +171,7 @@ class _SignUpState extends State<Registration> {
             )
           ],
         ),
-      ),
+      ),*/
     );
     ;
   }

@@ -1,11 +1,11 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 
 
 
 class AuthService2 {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-
 
 
   Future signInWithEmailAndPassword(String email, String password) async {

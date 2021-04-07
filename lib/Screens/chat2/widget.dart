@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 Widget appBarMain2(BuildContext context) {
   return AppBar(
     title: Image.asset(
-      "assets/logo.png",
+      "assets/ayt.png",
       height: 40,
     ),
     elevation: 0.0,
@@ -15,6 +15,7 @@ InputDecoration textFieldInputDecoration(String hintText) {
   return InputDecoration(
       hintText: hintText,
       hintStyle: TextStyle(color: Colors.black),
+      fillColor: Colors.white70,
       focusedBorder:
           UnderlineInputBorder(borderSide: BorderSide(color: Colors.black)),
       enabledBorder:

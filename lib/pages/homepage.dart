@@ -1,6 +1,10 @@
 import 'package:AYT_Attendence/API/api.dart';
 import 'package:AYT_Attendence/Screens/Expenses/track_expenses.dart';
 import 'package:AYT_Attendence/Screens/LoginScreen/login2.dart';
+import 'package:AYT_Attendence/Screens/chat2/Chating2.dart';
+import 'package:AYT_Attendence/Screens/chat2/auth2.dart';
+import 'package:AYT_Attendence/Screens/chat2/authenticate2.dart';
+import 'package:AYT_Attendence/Screens/chat2/helperfunctions2.dart';
 import 'package:AYT_Attendence/Screens/leavelists/track_leave.dart';
 import 'package:AYT_Attendence/Screens/notification/NotificationScreen.dart';
 import 'package:AYT_Attendence/Screens/webViews/about_us.dart';
@@ -82,11 +86,14 @@ class _CustomDrawerState extends State<CustomDrawer> {
   String userphn;
   String userimg;
 
+  bool userIsLoggedIn;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     getData();
+    getLoggedInState();
   }
   getData()async{
     SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
@@ -95,6 +102,14 @@ class _CustomDrawerState extends State<CustomDrawer> {
       uniqId=sharedPreferences.getString("unique_id");
       userphn=sharedPreferences.getString("phone");
       userimg=sharedPreferences.getString("image");
+    });
+  }
+
+  getLoggedInState() async {
+    await HelperFunctions2.getUserLoggedInSharedPreference().then((value){
+      setState(() {
+        userIsLoggedIn  = value;
+      });
     });
   }
 
@@ -172,7 +187,10 @@ class _CustomDrawerState extends State<CustomDrawer> {
             ListTile(
               onTap: (){
                 print("Tapped Chat");
-                //Navigator.push(context, MaterialPageRoute(builder: (context) => uID==null?BottomNavBar():ChatAllUser(),),);
+                Navigator.push(context,
+                  MaterialPageRoute(builder: (context) =>
+                  userIsLoggedIn != null ? ChatRoom()
+                      : BottomNavBar(),),);
               },
               leading: Icon(Icons.chat,color: Colors.orange,),
               title: Text("Chat",style: TextStyle(color: Colors.orange),),
@@ -192,7 +210,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
             ListTile(
               onTap: () {
                 debugPrint("Tapped Track Attendance");
-                Navigator.push(context, MaterialPageRoute(builder: (context) => TrackAttendance(),),);
+                Navigator.push(context, MaterialPageRoute(builder: (context) => TrackAttendance(initialDate: DateTime.now(),),),);
               },
               leading: Icon(Icons.attribution_outlined,color: Colors.orange,),
               title: Text("Track Attendance",style: TextStyle(color: Colors.orange),),
@@ -281,6 +299,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
               onTap: () async {
                 debugPrint("Tapped Log Out");
                 if(uniqId.toString().isNotEmpty){
+                  AuthService2().signOut();
                   SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
                   sharedPreferences.setBool("loggedIn", false);
                   Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MyLogin2(),),);

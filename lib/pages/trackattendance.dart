@@ -10,7 +10,13 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:month_picker_dialog/month_picker_dialog.dart';
+
 class TrackAttendance extends StatefulWidget {
+  final DateTime initialDate;
+
+  const TrackAttendance({Key key, this.initialDate}) : super(key: key);
   @override
   TrackAttendanceState createState() => TrackAttendanceState();
 }
@@ -29,12 +35,16 @@ class TrackAttendanceState extends State<TrackAttendance> {
   String  dateforattendance;
   String  formattedDateString;
 
+  DateTime selectedDate;
+
   var statuseCode;
+
   @override
   void initState(){
     // TODO: implement initState
     super.initState();
     getCurrentDate();
+    selectedDate = widget.initialDate;
 
   }
   getCurrentDate()async{
@@ -64,7 +74,7 @@ class TrackAttendanceState extends State<TrackAttendance> {
     });
   }
   DateTime currentDate = DateTime.now();
-  Future<void> _selectDateFrom(BuildContext context) async {
+  /*Future<void> _selectDateFrom(BuildContext context) async {
     final DateTime pickedDate = await showDatePicker(
         context: context,
         initialDate: currentDate,
@@ -81,7 +91,8 @@ class TrackAttendanceState extends State<TrackAttendance> {
         print("formattedDateString:--> "+formattedDateString);
 
       });
-  }
+  }*/
+
   Future<TrackAttendanceModel> notification() async {
 
     print("dateforattendance:--> "+formattedDateString);
@@ -186,7 +197,20 @@ class TrackAttendanceState extends State<TrackAttendance> {
                         //onpressed gets called when the button is tapped.
                         print("FlatButton tapped");
                          //Navigator.push(context, MaterialPageRoute(builder: (context) => SearchPage()));
-                        _selectDateFrom(context);
+                        //_selectDateFrom(context);
+                        showMonthPicker(
+                          context: context,
+                          firstDate: DateTime(DateTime.now().year - 1, 5),
+                          lastDate: DateTime(DateTime.now().year + 1, 9),
+                          //initialDate: selectedDate ?? widget.initialDate,
+                          //locale: Locale("es"),
+                        ).then((date) {
+                          if (date != null) {
+                            setState(() {
+                              selectedDate = date;
+                            });
+                          }
+                        });
                       },
                     ),
                     ),

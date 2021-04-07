@@ -1,5 +1,6 @@
 import 'package:AYT_Attendence/Screens/chat2/Login.dart';
 import 'package:AYT_Attendence/Screens/chat2/Registration.dart';
+import 'package:AYT_Attendence/pages/dashboard.dart';
 import 'package:flutter/material.dart';
 
 class Authenticate2 extends StatefulWidget {
@@ -12,7 +13,7 @@ class _AuthenticateState extends State<Authenticate2> {
 
   void toggleView() {
     setState(() {
-      showSignIn = !showSignIn;
+      showSignIn =! showSignIn;
     });
   }
 

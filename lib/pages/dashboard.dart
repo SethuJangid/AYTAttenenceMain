@@ -2,11 +2,17 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:AYT_Attendence/API/api.dart';
+import 'package:AYT_Attendence/Screens/chat2/Chating2.dart';
+import 'package:AYT_Attendence/Screens/chat2/auth2.dart';
+import 'package:AYT_Attendence/Screens/chat2/database.dart';
+import 'package:AYT_Attendence/Screens/chat2/helperfunctions2.dart';
 import 'package:AYT_Attendence/pages/EaelyCheck_IN_OUT.dart';
 import 'package:AYT_Attendence/sidebar/image_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -21,7 +27,6 @@ class Dashboard extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     return _DashboardState();
-
   }
 }
 
@@ -53,6 +58,15 @@ class _DashboardState extends State<Dashboard> {
   String userphn;
   String userimg;
 
+  AuthService2 authService = new AuthService2();
+  DatabaseMethods2 databaseMethods = new DatabaseMethods2();
+  final FirebaseAuth auth = FirebaseAuth.instance;
+
+  final formKey = GlobalKey<FormState>();
+
+  bool showSignIn = true ;
+  var onErrorFirebase;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -60,10 +74,19 @@ class _DashboardState extends State<Dashboard> {
     getData();
     showData();
   }
-
   getData()async{
     SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
+
+    QuerySnapshot userInfoSnapshot = await DatabaseMethods2().getUserInfo(email);
+    print(""+userInfoSnapshot.documents[0].data()["userEmail"]);
+    var user = userInfoSnapshot.documents[0].data()["userEmail"];
+    /*for(int i=0;userInfoSnapshot.size>0;i++){
+
+      print("Firebase UID---->"+user);
+    }*/
+
     setState(() {
+      showSignIn=sharedPreferences.getBool('loggedIn');
       name=sharedPreferences.getString("name");
       uniqID=sharedPreferences.getString("unique_id");
       latitude=sharedPreferences.getString("lat");
@@ -77,8 +100,70 @@ class _DashboardState extends State<Dashboard> {
       email = sharedPreferences.getString("email");
       password = sharedPreferences.getString("password");
       String image=path+userimg;
+      if(user == email){
+        signIn();
+      }else{
+        singUp(image);
+      }
+
 
     });
+  }
+  signIn() async {
+      await authService
+          .signInWithEmailAndPassword(
+          email, password)
+          .then((result) async {
+        if (result != null)  {
+          QuerySnapshot userInfoSnapshot =
+          await DatabaseMethods2().getUserInfo(email);
+          HelperFunctions2.saveUserLoggedInSharedPreference(true);
+          HelperFunctions2.saveUserNameSharedPreference(
+              userInfoSnapshot.documents[0].data()["userName"]);
+          HelperFunctions2.saveUserEmailSharedPreference(
+              userInfoSnapshot.documents[0].data()["userEmail"]);
+          /*Navigator.pushReplacement(
+              context, MaterialPageRoute(builder: (context) => ChatRoom()));*/
+        } else {
+          setState(() {
+            //isLoading = false;
+            //show snackbar
+          });
+        }
+      });
+  }
+
+  singUp(String image) async {
+    try{
+      await authService.signUpWithEmailAndPassword(email,password)
+          .then((result){
+        if(result != null){
+          Map<String,String> userDataMap = {
+
+            "userName" : name,
+            "userEmail" : email,
+            "userImage" : image,
+          };
+          print("Result---->"+result.toString());
+          databaseMethods.addUserInfo(userDataMap);
+          HelperFunctions2.saveUserLoggedInSharedPreference(true);
+          HelperFunctions2.saveUserNameSharedPreference(name);
+          HelperFunctions2.saveUserEmailSharedPreference(email);
+          HelperFunctions2.saveUserImageSharedPreference(image);
+          /*Navigator.pushReplacement(context, MaterialPageRoute(
+              builder: (context) => ChatRoom()
+          ));*/
+        }
+      });
+    }catch(signUpError){
+      print("SignUP Error!!!!!!!!!!--->"+signUpError.code);
+      if(signUpError is PlatformException) {
+        if(signUpError.code == '[firebase_auth/email-already-in-use] The email address is already in use by another account') {
+          signIn();
+        }
+      }
+    }
+
   }
 
   showData(){
@@ -180,12 +265,6 @@ class _DashboardState extends State<Dashboard> {
     print('refreshing stocks...');
   }
   Future trackdashStudent(String unique_id,String device_id) async {
-    //String device_id='ASD852SD';
-    print("UNIQ ID Dasboad--->"+uniqID);
-    print("device ID Dasboad--->"+device);
-    print("latitude ID Dasboad--->"+latitude);
-    print("longitude ID Dasboad--->"+longitude);
-
     var endpointUrl = All_API().baseurl+All_API().api_tack_dashboard +unique_id+"/"+device_id;
     // var endpointUrl = All_API().baseurl+All_API().api_tack_dashboard +"NODK2J2S0N5Z5M8C5P3T4X"+"/"+"046b75822227087b";
     print("URL dash-->"+endpointUrl);

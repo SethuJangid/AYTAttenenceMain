@@ -1,4 +1,5 @@
 
+import 'package:AYT_Attendence/Screens/Splash/splashscreen.dart';
 import 'package:AYT_Attendence/Screens/chat2/authenticate2.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -8,7 +9,6 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'Screens/Splash/animation_screen.dart';
 import 'Screens/chat2/Chating2.dart';
-import 'Screens/chat2/UserChatList.dart';
 import 'Screens/chat2/helperfunctions2.dart';
 
 void main() async {
@@ -37,11 +37,8 @@ class MyHomePageState extends State<MyHomePage> {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
 
-  bool userIsLoggedIn;
-
   @override
   void initState() {
-    getLoggedInState();
     getPermission();
     _getAddressFromLatLng();
     _getCurrentLocation();
@@ -53,15 +50,6 @@ class MyHomePageState extends State<MyHomePage> {
       setState(() {});
     });
   }
-
-  getLoggedInState() async {
-    await HelperFunctions2.getUserLoggedInSharedPreference().then((value){
-      setState(() {
-        userIsLoggedIn  = value;
-      });
-    });
-  }
-
 
   void getMessage(){
     _firebaseMessaging.getToken().then((token) => print(token));
@@ -146,13 +134,7 @@ class MyHomePageState extends State<MyHomePage> {
                 /*appBar: AppBar(
                     title: Text('Raindrop App'),
                   ),*/
-                  body: userIsLoggedIn != null ?  userIsLoggedIn ? ChatRoom() : Authenticate2()
-                      : Container(
-                    child: Center(
-                      child: Authenticate2(),
-                    ),
-                  ),
-                  //body: ChatScreen()
+                  body: SplashScreenPage()
                 //body: GeneralLeave(),
               ),
               /*IgnorePointer(

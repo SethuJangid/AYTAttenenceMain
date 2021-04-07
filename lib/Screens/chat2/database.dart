@@ -58,8 +58,8 @@ class DatabaseMethods2 {
   getUserChats(String itIsMyName) async {
     return await Firestore.instance
         .collection("chatRoom")
-        .where('users', isEqualTo: itIsMyName)
-        .snapshots(includeMetadataChanges: true);
+        .where('users', arrayContains: itIsMyName)
+        .snapshots();
   }
 
 }

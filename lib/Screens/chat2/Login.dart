@@ -5,7 +5,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'Chating2.dart';
-import 'UserChatList.dart';
 import 'auth2.dart';
 
 class Login extends StatefulWidget {
@@ -19,7 +18,7 @@ class Login extends StatefulWidget {
 }
 
 class _SignInState extends State<Login> {
-  TextEditingController emailEditingController = new TextEditingController();
+  /*TextEditingController emailEditingController = new TextEditingController();
   TextEditingController passwordEditingController = new TextEditingController();
 
   AuthService2 authService = new AuthService2();
@@ -33,7 +32,6 @@ class _SignInState extends State<Login> {
       setState(() {
         isLoading = true;
       });
-
       await authService
           .signInWithEmailAndPassword(
           emailEditingController.text, passwordEditingController.text)
@@ -58,14 +56,15 @@ class _SignInState extends State<Login> {
         }
       });
     }
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: appBarMain2(context),
-      body: isLoading
+      //body:
+      /*isLoading
           ? Container(
         child: Center(child: CircularProgressIndicator()),
       )
@@ -110,7 +109,7 @@ class _SignInState extends State<Login> {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                /*GestureDetector(
+                *//*GestureDetector(
                   onTap: () {
                     Navigator.push(
                         context,
@@ -124,7 +123,7 @@ class _SignInState extends State<Login> {
                         "Forgot Password?",
                         style: simpleTextStyle(),
                       )),
-                )*/
+                )*//*
               ],
             ),
             SizedBox(
@@ -164,7 +163,7 @@ class _SignInState extends State<Login> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    //widget.toggleView();
+                    widget.toggleView();
                   },
                   child: Text(
                     "Register now",
@@ -181,7 +180,7 @@ class _SignInState extends State<Login> {
             )
           ],
         ),
-      ),
+      ),*/
     );
   }
 }

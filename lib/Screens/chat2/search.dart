@@ -1,4 +1,5 @@
 import 'package:AYT_Attendence/Screens/chat2/constants.dart';
+import 'package:AYT_Attendence/Screens/chat2/helperfunctions2.dart';
 import 'package:AYT_Attendence/Screens/chat2/widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -19,8 +20,10 @@ class _SearchState extends State<Search> {
 
   bool isLoading = false;
   bool haveUserSearched = false;
+  String userImage;
 
   initiateSearch() async {
+    userImage = await HelperFunctions2.getUserImageSharedPreference();
     if(searchEditingController.text.isNotEmpty){
       setState(() {
         isLoading = true;
@@ -28,7 +31,7 @@ class _SearchState extends State<Search> {
       await databaseMethods.searchByName(searchEditingController.text)
           .then((snapshot){
         searchResultSnapshot = snapshot;
-        print("$searchResultSnapshot");
+        print("Search Name-->$searchResultSnapshot");
         setState(() {
           isLoading = false;
           haveUserSearched = true;
@@ -42,6 +45,8 @@ class _SearchState extends State<Search> {
       shrinkWrap: true,
       itemCount: searchResultSnapshot.documents.length,
         itemBuilder: (context, index){
+        print("UserNAme--->"+searchResultSnapshot.documents[index].data()["userName"]);
+        print("UserEmail--->"+searchResultSnapshot.documents[index].data()["userEmail"]);
         return userTile(
           searchResultSnapshot.documents[index].data()["userName"],
           searchResultSnapshot.documents[index].data()["userEmail"],
@@ -65,54 +70,59 @@ class _SearchState extends State<Search> {
     Navigator.push(context, MaterialPageRoute(
       builder: (context) => Chat2(
         chatRoomId: chatRoomId,
+        userName: userName,
+        userImage: userImage,
       )
     ));
 
   }
 
   Widget userTile(String userName,String userEmail){
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-      child: Row(
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                userName,
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 16
+    return Card(
+      elevation: 8,
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+        child: Row(
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  userName,
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 16
+                  ),
                 ),
-              ),
-              Text(
-                userEmail,
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 16
-                ),
-              )
-            ],
-          ),
-          Spacer(),
-          GestureDetector(
-            onTap: (){
-              sendMessage(userName);
-            },
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 12,vertical: 8),
-              decoration: BoxDecoration(
-                  color: Colors.blue,
-                  borderRadius: BorderRadius.circular(24)
-              ),
-              child: Text("Message",
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 16
-                ),),
+                Text(
+                  userEmail,
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 16
+                  ),
+                )
+              ],
             ),
-          )
-        ],
+            Spacer(),
+            GestureDetector(
+              onTap: (){
+                sendMessage(userName);
+              },
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 12,vertical: 8),
+                decoration: BoxDecoration(
+                    color: Colors.blue[1000],
+                    borderRadius: BorderRadius.circular(24)
+                ),
+                child: Text("Message",
+                  style: TextStyle(
+                      color: Colors.orange,
+                      fontSize: 16
+                  ),),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
@@ -129,6 +139,7 @@ class _SearchState extends State<Search> {
   @override
   void initState() {
     super.initState();
+    userList();
   }
 
 
@@ -136,7 +147,22 @@ class _SearchState extends State<Search> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBarMain2(context),
+      appBar: AppBar(
+        backgroundColor: Colors.blue[1000],
+        title: Text(
+          "SEARCH LIST",
+          style: TextStyle(fontSize: 20,color: Colors.orange),
+        ),
+        elevation: 0.0,
+        leading: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Image.asset(
+            "assets/ayt.png",
+            height: 40,
+            color: Colors.white,
+          ),
+        ),
+      ),
       body: isLoading ? Container(
         child: Center(
           child: CircularProgressIndicator(),
@@ -146,7 +172,7 @@ class _SearchState extends State<Search> {
           children: [
             Container(
               padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-              color: Color(0x54FFFFFF),
+              color: Color(0xFF5F5E5E),
               child: Row(
                 children: [
                   Expanded(
@@ -167,23 +193,7 @@ class _SearchState extends State<Search> {
                     onTap: (){
                       initiateSearch();
                     },
-                    child: Container(
-                      height: 40,
-                        width: 40,
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: [
-                              const Color(0x36FFFFFF),
-                              const Color(0x0FFFFFFF)
-                            ],
-                            begin: FractionalOffset.topLeft,
-                            end: FractionalOffset.bottomRight
-                          ),
-                          borderRadius: BorderRadius.circular(40)
-                        ),
-                        padding: EdgeInsets.all(12),
-                        child: Image.asset("assets/images/search_black.png",
-                          height: 25, width: 25,)),
+                    child: Icon(Icons.search,size: 25,),
                   )
                 ],
               ),
